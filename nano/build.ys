@@ -1,0 +1,6 @@
+read_verilog rtl/main.v rtl/main_cpu.v rtl/Ram.v rtl/PC.v rtl/Hazard_Buffer.v
+read_verilog rtl/Instruction_Reg.v rtl/CPU_Reg.v rtl/Control_Unit.v rtl/Immediate_Generator.v
+read_verilog rtl/ALU_Decoder.v rtl/ID_EX_Stage_Reg.v rtl/Forwarding_Unit.v rtl/Arith_MUX.v
+read_verilog rtl/Arith_Unit.v rtl/Branch_MUX.v rtl/EX_MEM_Stage_Reg.v rtl/Mem_Fwd_MUX.v
+read_verilog rtl/MEM_WB_Stage_Reg.v rtl/WriteBack_Aligner.v nano_cpu_top.v
+synth_gowin -top nano_cpu_top -family gw2a -json build/cpu_ram_led.json

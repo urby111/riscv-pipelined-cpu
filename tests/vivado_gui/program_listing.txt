@@ -1,0 +1,151 @@
+000: 00108093  addi x1,x1,1 -- must execute once after reset
+004: 30000f93  addi x31,x0,768 -- scratch base
+008: 0a1fa023  sw x1,160(x31) -- checked result
+00c: 800000b7  lui x1,high(80000001)
+010: 00108093  addi x1,x1,low(80000001)
+014: 00000137  lui x2,high(0000001f)
+018: 01f10113  addi x2,x2,low(0000001f)
+01c: 002081b3  ADD x3,x1,x2; immediate forwarding to store
+020: 0a3fa023  sw x3,160(x31) -- checked result
+024: 402081b3  SUB x3,x1,x2; immediate forwarding to store
+028: 0a3fa023  sw x3,160(x31) -- checked result
+02c: 002091b3  SLL x3,x1,x2; immediate forwarding to store
+030: 0a3fa023  sw x3,160(x31) -- checked result
+034: 0020a1b3  SLT x3,x1,x2; immediate forwarding to store
+038: 0a3fa023  sw x3,160(x31) -- checked result
+03c: 0020b1b3  SLTU x3,x1,x2; immediate forwarding to store
+040: 0a3fa023  sw x3,160(x31) -- checked result
+044: 0020c1b3  XOR x3,x1,x2; immediate forwarding to store
+048: 0a3fa023  sw x3,160(x31) -- checked result
+04c: 0020d1b3  SRL x3,x1,x2; immediate forwarding to store
+050: 0a3fa023  sw x3,160(x31) -- checked result
+054: 4020d1b3  SRA x3,x1,x2; immediate forwarding to store
+058: 0a3fa023  sw x3,160(x31) -- checked result
+05c: 0020e1b3  OR x3,x1,x2; immediate forwarding to store
+060: 0a3fa023  sw x3,160(x31) -- checked result
+064: 0020f1b3  AND x3,x1,x2; immediate forwarding to store
+068: 0a3fa023  sw x3,160(x31) -- checked result
+06c: fff08193  ADDI x3,x1,-1
+070: 0a3fa023  sw x3,160(x31) -- checked result
+074: 01f09193  SLLI x3,x1,31
+078: 0a3fa023  sw x3,160(x31) -- checked result
+07c: fff0a193  SLTI x3,x1,-1
+080: 0a3fa023  sw x3,160(x31) -- checked result
+084: fff0b193  SLTIU x3,x1,-1
+088: 0a3fa023  sw x3,160(x31) -- checked result
+08c: fff0c193  XORI x3,x1,-1
+090: 0a3fa023  sw x3,160(x31) -- checked result
+094: 01f0d193  SRLI x3,x1,31
+098: 0a3fa023  sw x3,160(x31) -- checked result
+09c: 41f0d193  SRAI x3,x1,1055
+0a0: 0a3fa023  sw x3,160(x31) -- checked result
+0a4: 0550e193  ORI x3,x1,85
+0a8: 0a3fa023  sw x3,160(x31) -- checked result
+0ac: 0ff0f193  ANDI x3,x1,255
+0b0: 0a3fa023  sw x3,160(x31) -- checked result
+0b4: 123451b7  lui x3,0x12345
+0b8: 0a3fa023  sw x3,160(x31) -- checked result
+0bc: 00001197  auipc x3,0x1
+0c0: 0a3fa023  sw x3,160(x31) -- checked result
+0c4: 06300013  addi x0,x0,99 -- x0 stays zero
+0c8: 0a0fa023  sw x0,160(x31) -- checked result
+0cc: 80ff8237  lui x4,high(80ff7f81)
+0d0: f8120213  addi x4,x4,low(80ff7f81)
+0d4: 004fa023  sw x4,0(x31)
+0d8: 000f8283  LB x5,0(x31)
+0dc: 00128313  addi x6,x5,1 -- load-use dependency
+0e0: 0a6fa023  sw x6,160(x31) -- checked result
+0e4: 000fc283  LBU x5,0(x31)
+0e8: 00128313  addi x6,x5,1 -- load-use dependency
+0ec: 0a6fa023  sw x6,160(x31) -- checked result
+0f0: 002f9283  LH x5,2(x31)
+0f4: 00128313  addi x6,x5,1 -- load-use dependency
+0f8: 0a6fa023  sw x6,160(x31) -- checked result
+0fc: 002fd283  LHU x5,2(x31)
+100: 00128313  addi x6,x5,1 -- load-use dependency
+104: 0a6fa023  sw x6,160(x31) -- checked result
+108: 000fa283  LW x5,0(x31)
+10c: 00128313  addi x6,x5,1 -- load-use dependency
+110: 0a6fa023  sw x6,160(x31) -- checked result
+114: 000fa283  lw x5,0(x31)
+118: 005fa223  sw x5,4(x31) -- late load-to-store forwarding
+11c: 004fa303  lw x6,4(x31)
+120: 0a6fa023  sw x6,160(x31) -- checked result
+124: 002f80a3  sb x2,1(x31)
+128: 002f9123  sh x2,2(x31)
+12c: 000fa303  lw x6,0(x31) -- verify byte lanes
+130: 0a6fa023  sw x6,160(x31) -- checked result
+134: 765431b7  lui x3,high(76543210)
+138: 21018193  addi x3,x3,low(76543210)
+13c: 022081b3  MUL disabled -- must preserve x3
+140: 00118213  addi x4,x3,1 -- no false MUL result forwarding
+144: 0a4fa023  sw x4,160(x31) -- checked result
+148: 00000093  addi x1,x0,0
+14c: 00000113  addi x2,x0,0
+150: 00208463  branch f3=0 x1,x2,branch_0_0
+154: 0e1fae23  wrong-path completion store -- MUST be squashed
+158: 00a00193  branch marker
+15c: 0a3fa023  sw x3,160(x31) -- checked result
+160: 0e209a63  branch f3=1 x1,x2,failure
+164: 00b00193  branch marker
+168: 0a3fa023  sw x3,160(x31) -- checked result
+16c: 0e20c463  branch f3=4 x1,x2,failure
+170: 00e00193  branch marker
+174: 0a3fa023  sw x3,160(x31) -- checked result
+178: 0020d463  branch f3=5 x1,x2,branch_0_5
+17c: 0e1fae23  wrong-path completion store -- MUST be squashed
+180: 00f00193  branch marker
+184: 0a3fa023  sw x3,160(x31) -- checked result
+188: 0c20e663  branch f3=6 x1,x2,failure
+18c: 01000193  branch marker
+190: 0a3fa023  sw x3,160(x31) -- checked result
+194: 0020f463  branch f3=7 x1,x2,branch_0_7
+198: 0e1fae23  wrong-path completion store -- MUST be squashed
+19c: 01100193  branch marker
+1a0: 0a3fa023  sw x3,160(x31) -- checked result
+1a4: fff00093  addi x1,x0,-1
+1a8: 00100113  addi x2,x0,1
+1ac: 0a208463  branch f3=0 x1,x2,failure
+1b0: 00a00193  branch marker
+1b4: 0a3fa023  sw x3,160(x31) -- checked result
+1b8: 00209463  branch f3=1 x1,x2,branch_1_1
+1bc: 0e1fae23  wrong-path completion store -- MUST be squashed
+1c0: 00b00193  branch marker
+1c4: 0a3fa023  sw x3,160(x31) -- checked result
+1c8: 0020c463  branch f3=4 x1,x2,branch_1_4
+1cc: 0e1fae23  wrong-path completion store -- MUST be squashed
+1d0: 00e00193  branch marker
+1d4: 0a3fa023  sw x3,160(x31) -- checked result
+1d8: 0620de63  branch f3=5 x1,x2,failure
+1dc: 00f00193  branch marker
+1e0: 0a3fa023  sw x3,160(x31) -- checked result
+1e4: 0620e863  branch f3=6 x1,x2,failure
+1e8: 01000193  branch marker
+1ec: 0a3fa023  sw x3,160(x31) -- checked result
+1f0: 0020f463  branch f3=7 x1,x2,branch_1_7
+1f4: 0e1fae23  wrong-path completion store -- MUST be squashed
+1f8: 01100193  branch marker
+1fc: 0a3fa023  sw x3,160(x31) -- checked result
+200: 000fa423  initialize zero scratch word
+204: 008fa083  lw x1,8(x31)
+208: 00008463  branch f3=0 x1,x0,load_branch
+20c: 0e2fae23  wrong-path store after load/branch -- MUST be squashed
+210: 03c002ef  jal x5,function
+214: 0a6fa023  sw x6,160(x31) -- checked result
+218: 0a5fa023  sw x5,160(x31) -- checked result
+21c: 22900493  addi x9,x0,indirect_target+1
+220: 000484e7  jalr x9,0(x9) -- odd target and source/destination alias
+224: 0e2fae23  wrong-path JALR store -- MUST be squashed
+228: 0a9fa023  sw x9,160(x31) -- checked result
+22c: 00300513  loop count=3
+230: fff50513  decrement loop count
+234: fe051ee3  branch f3=1 x10,x0,loop
+238: 0aafa023  sw x10,160(x31) -- checked result
+23c: 600dc5b7  lui x11,high(600dc0de)
+240: 0de58593  addi x11,x11,low(600dc0de)
+244: 0ebfae23  completion signature
+248: 0000006f  jal x0,halt
+24c: 00328313  function uses JAL link immediately
+250: 00028067  jalr x0,0(x5) -- return
+254: 0e0fae23  failure signature
+258: ff1ff06f  jal x0,halt
